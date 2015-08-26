@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_genbank_to_sff_0" name="Convert genbank to sff" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 genbank $output1 sff
+    </command>
+    <inputs>
+        <param format="genbank" name="input1" type="data" label="Choose genbank file" />
+    </inputs>
+    <outputs>
+        <data format="sff" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

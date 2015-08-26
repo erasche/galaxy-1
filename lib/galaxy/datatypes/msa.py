@@ -191,3 +191,6 @@ class MauveXmfa( Text ):
 
     def set_meta( self, dataset, **kwd ):
         dataset.metadata.number_of_models = generic_util.count_special_lines('^#Sequence([[:digit:]]+)Entry', dataset.file_name)
+
+
+

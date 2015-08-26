@@ -25,6 +25,12 @@ try:
 except:
     pass
 
+try:
+    eggs.require( "biopython" )
+    from Bio import SeqIO
+    from Bio import AlignIO
+except:
+    pass
 
 log = logging.getLogger(__name__)
 
@@ -1052,3 +1058,138 @@ class DotBracket ( Sequence ):
 
         # Number of lines is less than 3
         return False
+
+
+class SeqIOSequence( Sequence ):
+    """Class describing SeqIO sequence"""
+
+    def set_peek( self, dataset, is_multi_byte=False ):
+        if not dataset.dataset.purged:
+            dataset.peek = data.get_file_peek( dataset.file_name, is_multi_byte=is_multi_byte )
+            if dataset.metadata.sequences:
+                dataset.blurb = "%s sequences" % util.commaify( str( dataset.metadata.sequences ) )
+            else:
+                dataset.blurb = nice_size( dataset.get_size() )
+        else:
+            dataset.peek = 'file does not exist'
+            dataset.blurb = 'file purged from disk'
+
+    def get_mime(self):
+        return 'text/plain'
+
+    def sniff( self, filename ):
+        try:
+            # Sometimes we'd like to override this. E.g. acedb -> ace
+            if hasattr(self, 'seqio_type'):
+                ext = self.seqio_type
+            else:
+                ext = self.file_ext
+            SeqIO.read( filename, ext )
+
+        except ValueError:
+            return False
+        return True
+
+    def set_meta( self, dataset, **kwd ):
+        records = list( SeqIO.parse( dataset.file_name, self.file_ext ) )
+        dataset.metadata.number_of_sequences = len( records )
+
+
+class Genbank( SeqIOSequence ):
+    file_ext = 'genbank'
+
+
+class Acedb( SeqIOSequence ):
+    file_ext = 'acedb'
+    seqio_type = 'ace'
+
+
+class Embl( SeqIOSequence ):
+    file_ext = 'embl'
+
+
+class Imgt( SeqIOSequence ):
+    file_ext = 'imgt'
+
+
+class Phd( SeqIOSequence ):
+    file_ext = 'phd'
+
+
+class SeqXml( SeqIOSequence ):
+    file_ext = 'seqxml'
+
+    def get_mime(self):
+        return 'application/xml'
+
+
+class UniprotXml( SeqIOSequence ):
+    file_ext = 'uniprotxml'
+    seqio_type = 'uniprot-xml'
+
+    def get_mime(self):
+        return 'application/xml'
+
+
+class Pir( SeqIOSequence ):
+    file_ext = 'pir'
+
+
+class Swiss( SeqIOSequence ):
+    file_ext = 'swiss'
+
+
+class AlignIOSequence( Sequence ):
+    """Class describing SeqIO sequence"""
+
+    def set_peek( self, dataset, is_multi_byte=False ):
+        if not dataset.dataset.purged:
+            dataset.peek = data.get_file_peek( dataset.file_name, is_multi_byte=is_multi_byte )
+            if dataset.metadata.sequences:
+                dataset.blurb = "%s alignments" % util.commaify( str( dataset.metadata.sequences ) )
+            else:
+                dataset.blurb = nice_size( dataset.get_size() )
+        else:
+            dataset.peek = 'file does not exist'
+            dataset.blurb = 'file purged from disk'
+
+    def get_mime(self):
+        return 'text/plain'
+
+    def sniff( self, filename ):
+        try:
+            # Sometimes we'd like to override this. E.g. acedb -> ace
+            if hasattr(self, 'alignio_type'):
+                ext = self.alignio_type
+            else:
+                ext = self.file_ext
+            AlignIO.read( filename, ext )
+
+        except ValueError:
+            return False
+        return True
+
+    def set_meta( self, dataset, **kwd ):
+        records = list( AlignIO.parse( dataset.file_name, self.file_ext ) )
+        dataset.metadata.number_of_sequences = len( records )
+
+
+class Clustal( AlignIOSequence ):
+    file_ext = 'clustal'
+
+
+class Emboss( AlignIOSequence ):
+    file_ext = 'emboss'
+
+
+class FastaM10( AlignIOSequence ):
+    file_ext = 'fasta'
+    alignio_type = 'fasta-m10'
+
+
+class Ig( AlignIOSequence ):
+    file_ext = 'ig'
+
+
+class Phylip( AlignIOSequence ):
+    file_ext = 'phy'

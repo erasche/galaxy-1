@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_ig_to_maf_0" name="Convert ig to maf" version="1.0.0">
+    <command interpreter="python">
+        generic_alignio.py $input1 ig $output1 maf
+    </command>
+    <inputs>
+        <param format="ig" name="input1" type="data" label="Choose ig file" />
+    </inputs>
+    <outputs>
+        <data format="maf" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

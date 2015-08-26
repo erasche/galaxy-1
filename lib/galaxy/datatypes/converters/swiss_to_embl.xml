@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_swiss_to_embl_0" name="Convert swiss to embl" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 swiss $output1 embl
+    </command>
+    <inputs>
+        <param format="swiss" name="input1" type="data" label="Choose swiss file" />
+    </inputs>
+    <outputs>
+        <data format="embl" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_fasta-m10_to_clustal_0" name="Convert fasta-m10 to clustal" version="1.0.0">
+    <command interpreter="python">
+        generic_alignio.py $input1 fasta-m10 $output1 clustal
+    </command>
+    <inputs>
+        <param format="fasta-m10" name="input1" type="data" label="Choose fasta-m10 file" />
+    </inputs>
+    <outputs>
+        <data format="clustal" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_uniprot-xml_to_seqxml_0" name="Convert uniprot-xml to seqxml" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 uniprot-xml $output1 seqxml
+    </command>
+    <inputs>
+        <param format="uniprot-xml" name="input1" type="data" label="Choose uniprot-xml file" />
+    </inputs>
+    <outputs>
+        <data format="seqxml" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

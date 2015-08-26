@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_clustal_to_nexus_0" name="Convert clustal to nexus" version="1.0.0">
+    <command interpreter="python">
+        generic_alignio.py $input1 clustal $output1 nexus
+    </command>
+    <inputs>
+        <param format="clustal" name="input1" type="data" label="Choose clustal file" />
+    </inputs>
+    <outputs>
+        <data format="nexus" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

@@ -263,7 +263,12 @@
     <!-- Phylogenetic tree datatypes -->
     <datatype extension="phyloxml" type="galaxy.datatypes.xml:Phyloxml" display_in_upload="true" />
     <datatype extension="nhx" type="galaxy.datatypes.data:Newick" display_in_upload="true" />
-    <datatype extension="nex" type="galaxy.datatypes.data:Nexus" display_in_upload="true" />
+    <datatype extension="nex" type="galaxy.datatypes.data:Nexus" display_in_upload="true">
+      <converter file="nexus_to_clustal.xml" target_datatype="clustal" />
+      <converter file="nexus_to_fasta.xml" target_datatype="fasta" />
+      <converter file="nexus_to_phylip.xml" target_datatype="phylip" />
+      <converter file="nexus_to_stockholm.xml" target_datatype="stockholm" />
+    </datatype>
     <!-- Start RGenetics Datatypes -->
     <datatype extension="affybatch" type="galaxy.datatypes.genetics:Affybatch" display_in_upload="true"/>
     <!-- eigenstrat pedigree input file -->
@@ -309,6 +314,144 @@
     <datatype extension="rdf" type="galaxy.datatypes.graph:Rdf" display_in_upload="true"/>
     <!-- Excel datatypes -->
     <datatype extension="xlsx" type="galaxy.datatypes.binary:Xlsx" display_in_upload="true" />
+
+    <!-- AlignIO Datatypes -->
+
+    <datatype extension="clustal" type="galaxy.datatypes.sequence:Clustal" display_in_upload="True">
+      <converter file="clustal_to_fasta.xml" target_datatype="fasta" />
+      <converter file="clustal_to_nexus.xml" target_datatype="nexus" />
+      <converter file="clustal_to_phylip.xml" target_datatype="phylip" />
+      <converter file="clustal_to_stockholm.xml" target_datatype="stockholm" />
+    </datatype>
+    <datatype extension="emboss" type="galaxy.datatypes.sequence:Emboss" display_in_upload="True">
+      <converter file="emboss_to_clustal.xml" target_datatype="clustal" />
+      <converter file="emboss_to_fasta.xml" target_datatype="fasta" />
+      <converter file="emboss_to_nexus.xml" target_datatype="nexus" />
+      <converter file="emboss_to_phylip.xml" target_datatype="phylip" />
+      <converter file="emboss_to_stockholm.xml" target_datatype="stockholm" />
+    </datatype>
+    <datatype extension="fasta-m10" type="galaxy.datatypes.sequence:FastaM10" display_in_upload="True">
+      <converter file="fasta-m10_to_clustal.xml" target_datatype="clustal" />
+      <converter file="fasta-m10_to_fasta.xml" target_datatype="fasta" />
+      <converter file="fasta-m10_to_nexus.xml" target_datatype="nexus" />
+      <converter file="fasta-m10_to_phylip.xml" target_datatype="phylip" />
+      <converter file="fasta-m10_to_stockholm.xml" target_datatype="stockholm" />
+    </datatype>
+    <datatype extension="ig" type="galaxy.datatypes.sequence:Ig" display_in_upload="True">
+      <converter file="ig_to_clustal.xml" target_datatype="clustal" />
+      <converter file="ig_to_fasta.xml" target_datatype="fasta" />
+      <converter file="ig_to_nexus.xml" target_datatype="nexus" />
+      <converter file="ig_to_phylip.xml" target_datatype="phylip" />
+      <converter file="ig_to_stockholm.xml" target_datatype="stockholm" />
+    </datatype>
+    <datatype extension="phylip" type="galaxy.datatypes.sequence:Phylip" display_in_upload="True">
+      <converter file="phylip_to_clustal.xml" target_datatype="clustal" />
+      <converter file="phylip_to_fasta.xml" target_datatype="fasta" />
+      <converter file="phylip_to_nexus.xml" target_datatype="nexus" />
+      <converter file="phylip_to_stockholm.xml" target_datatype="stockholm" />
+    </datatype>
+    <datatype extension="nexusnon" type="galaxy.datatypes.sequence:Nexus" display_in_upload="True" subclass="True">
+    </datatype>
+    <datatype extension="phylipnon" type="galaxy.datatypes.sequence:Phylip" display_in_upload="True" subclass="True">
+    </datatype>
+
+    <!-- SeqIO Datatypes. Please note there is some overlap with emboss. Emboss
+         datatypes were "upgraded" with sniffers and moved here when possible. -->
+    <datatype extension="ace" type="galaxy.datatypes.sequence:Ace" display_in_upload="True">
+      <converter file="ace_to_embl.xml" target_datatype="embl" />
+      <converter file="ace_to_fasta.xml" target_datatype="fasta" />
+      <converter file="ace_to_genbank.xml" target_datatype="genbank" />
+      <converter file="ace_to_imgt.xml" target_datatype="imgt" />
+      <converter file="ace_to_phd.xml" target_datatype="phd" />
+      <converter file="ace_to_seqxml.xml" target_datatype="seqxml" />
+      <converter file="ace_to_sff.xml" target_datatype="sff" />
+    </datatype>
+    <datatype extension="embl" type="galaxy.datatypes.sequence:Embl" display_in_upload="True">
+      <converter file="embl_to_fasta.xml" target_datatype="fasta" />
+      <converter file="embl_to_genbank.xml" target_datatype="genbank" />
+      <converter file="embl_to_imgt.xml" target_datatype="imgt" />
+      <converter file="embl_to_phd.xml" target_datatype="phd" />
+      <converter file="embl_to_seqxml.xml" target_datatype="seqxml" />
+      <converter file="embl_to_sff.xml" target_datatype="sff" />
+    </datatype>
+    <datatype extension="fasta" type="galaxy.datatypes.sequence:Fasta" display_in_upload="True">
+      <converter file="fasta_to_embl.xml" target_datatype="embl" />
+      <converter file="fasta_to_genbank.xml" target_datatype="genbank" />
+      <converter file="fasta_to_imgt.xml" target_datatype="imgt" />
+      <converter file="fasta_to_phd.xml" target_datatype="phd" />
+      <converter file="fasta_to_seqxml.xml" target_datatype="seqxml" />
+      <converter file="fasta_to_sff.xml" target_datatype="sff" />
+    </datatype>
+    <datatype extension="genbank" type="galaxy.datatypes.sequence:Genbank" display_in_upload="True">
+      <converter file="genbank_to_embl.xml" target_datatype="embl" />
+      <converter file="genbank_to_fasta.xml" target_datatype="fasta" />
+      <converter file="genbank_to_imgt.xml" target_datatype="imgt" />
+      <converter file="genbank_to_phd.xml" target_datatype="phd" />
+      <converter file="genbank_to_seqxml.xml" target_datatype="seqxml" />
+      <converter file="genbank_to_sff.xml" target_datatype="sff" />
+    </datatype>
+    <datatype extension="imgt" type="galaxy.datatypes.sequence:Imgt" display_in_upload="True">
+      <converter file="imgt_to_embl.xml" target_datatype="embl" />
+      <converter file="imgt_to_fasta.xml" target_datatype="fasta" />
+      <converter file="imgt_to_genbank.xml" target_datatype="genbank" />
+      <converter file="imgt_to_phd.xml" target_datatype="phd" />
+      <converter file="imgt_to_seqxml.xml" target_datatype="seqxml" />
+      <converter file="imgt_to_sff.xml" target_datatype="sff" />
+    </datatype>
+    <datatype extension="phd" type="galaxy.datatypes.sequence:Phd" display_in_upload="True">
+      <converter file="phd_to_embl.xml" target_datatype="embl" />
+      <converter file="phd_to_fasta.xml" target_datatype="fasta" />
+      <converter file="phd_to_genbank.xml" target_datatype="genbank" />
+      <converter file="phd_to_imgt.xml" target_datatype="imgt" />
+      <converter file="phd_to_seqxml.xml" target_datatype="seqxml" />
+      <converter file="phd_to_sff.xml" target_datatype="sff" />
+    </datatype>
+    <datatype extension="pir" type="galaxy.datatypes.sequence:Pir" display_in_upload="True">
+      <converter file="pir_to_embl.xml" target_datatype="embl" />
+      <converter file="pir_to_fasta.xml" target_datatype="fasta" />
+      <converter file="pir_to_genbank.xml" target_datatype="genbank" />
+      <converter file="pir_to_imgt.xml" target_datatype="imgt" />
+      <converter file="pir_to_phd.xml" target_datatype="phd" />
+      <converter file="pir_to_seqxml.xml" target_datatype="seqxml" />
+      <converter file="pir_to_sff.xml" target_datatype="sff" />
+    </datatype>
+    <datatype extension="seqxml" type="galaxy.datatypes.sequence:Seqxml" display_in_upload="True">
+      <converter file="seqxml_to_embl.xml" target_datatype="embl" />
+      <converter file="seqxml_to_fasta.xml" target_datatype="fasta" />
+      <converter file="seqxml_to_genbank.xml" target_datatype="genbank" />
+      <converter file="seqxml_to_imgt.xml" target_datatype="imgt" />
+      <converter file="seqxml_to_phd.xml" target_datatype="phd" />
+      <converter file="seqxml_to_sff.xml" target_datatype="sff" />
+    </datatype>
+    <datatype extension="sff" type="galaxy.datatypes.sequence:Sff" display_in_upload="True">
+      <converter file="sff_to_embl.xml" target_datatype="embl" />
+      <converter file="sff_to_fasta.xml" target_datatype="fasta" />
+      <converter file="sff_to_genbank.xml" target_datatype="genbank" />
+      <converter file="sff_to_imgt.xml" target_datatype="imgt" />
+      <converter file="sff_to_phd.xml" target_datatype="phd" />
+      <converter file="sff_to_seqxml.xml" target_datatype="seqxml" />
+    </datatype>
+    <datatype extension="swiss" type="galaxy.datatypes.sequence:Swiss" display_in_upload="True">
+      <converter file="swiss_to_embl.xml" target_datatype="embl" />
+      <converter file="swiss_to_fasta.xml" target_datatype="fasta" />
+      <converter file="swiss_to_genbank.xml" target_datatype="genbank" />
+      <converter file="swiss_to_imgt.xml" target_datatype="imgt" />
+      <converter file="swiss_to_phd.xml" target_datatype="phd" />
+      <converter file="swiss_to_seqxml.xml" target_datatype="seqxml" />
+      <converter file="swiss_to_sff.xml" target_datatype="sff" />
+    </datatype>
+    <datatype extension="uniprotxml" type="galaxy.datatypes.sequence:Uniprotxml" display_in_upload="True">
+      <converter file="uniprotxml_to_embl.xml" target_datatype="embl" />
+      <converter file="uniprotxml_to_fasta.xml" target_datatype="fasta" />
+      <converter file="uniprotxml_to_genbank.xml" target_datatype="genbank" />
+      <converter file="uniprotxml_to_imgt.xml" target_datatype="imgt" />
+      <converter file="uniprotxml_to_phd.xml" target_datatype="phd" />
+      <converter file="uniprotxml_to_seqxml.xml" target_datatype="seqxml" />
+      <converter file="uniprotxml_to_sff.xml" target_datatype="sff" />
+    </datatype>
+
+
+    <!-- EMBOSS Datatypes -->
     <datatype extension="btwisted" type="galaxy.datatypes.data:Text" subclass="True"/>
     <datatype extension="cai" type="galaxy.datatypes.data:Text" subclass="True"/>
     <datatype extension="charge" type="galaxy.datatypes.data:Text" subclass="True"/>
@@ -374,27 +517,16 @@
     <datatype extension="table" type="galaxy.datatypes.data:Text" subclass="True"/>
     <datatype extension="tagseq" type="galaxy.datatypes.data:Text" subclass="True"/>
     <!-- Sequence formats http://emboss.sourceforge.net/docs/themes/SequenceFormats.html -->
-    <datatype extension="acedb" type="galaxy.datatypes.data:Text" subclass="True"/>
-    <datatype extension="clustal" type="galaxy.datatypes.data:Text" subclass="True"/>
     <datatype extension="codata" type="galaxy.datatypes.data:Text" subclass="True"/>
-    <datatype extension="embl" type="galaxy.datatypes.data:Text" subclass="True"/>
     <datatype extension="fitch" type="galaxy.datatypes.data:Text" subclass="True"/>
     <datatype extension="gcg" type="galaxy.datatypes.data:Text" subclass="True"/>
-    <datatype extension="genbank" type="galaxy.datatypes.data:Text" subclass="True" edam_format="format_1936"/>
     <datatype extension="hennig86" type="galaxy.datatypes.data:Text" subclass="True"/>
-    <datatype extension="ig" type="galaxy.datatypes.data:Text" subclass="True"/>
     <datatype extension="jackknifer" type="galaxy.datatypes.data:Text" subclass="True"/>
     <datatype extension="jackknifernon" type="galaxy.datatypes.data:Text" subclass="True"/>
     <datatype extension="mega" type="galaxy.datatypes.data:Text" subclass="True"/>
     <datatype extension="meganon" type="galaxy.datatypes.data:Text" subclass="True"/>
     <datatype extension="ncbi" type="galaxy.datatypes.data:Text" subclass="True"/>
-    <datatype extension="nexus" type="galaxy.datatypes.data:Text" subclass="True"/>
-    <datatype extension="nexusnon" type="galaxy.datatypes.data:Text" subclass="True"/>
-    <datatype extension="phylip" type="galaxy.datatypes.data:Text" subclass="True"/>
-    <datatype extension="phylipnon" type="galaxy.datatypes.data:Text" subclass="True"/>
-    <datatype extension="pir" type="galaxy.datatypes.data:Text" subclass="True"/>
     <datatype extension="staden" type="galaxy.datatypes.data:Text" subclass="True"/>
-    <datatype extension="swiss" type="galaxy.datatypes.data:Text" subclass="True"/>
     <!-- Alignment Formats http://emboss.sourceforge.net/docs/themes/AlignFormats.html -->
     <datatype extension="markx0" type="galaxy.datatypes.data:Text" subclass="True"/>
     <datatype extension="markx1" type="galaxy.datatypes.data:Text" subclass="True"/>
@@ -405,10 +537,16 @@
     <datatype extension="score" type="galaxy.datatypes.data:Text" subclass="True"/>
     <datatype extension="srs" type="galaxy.datatypes.data:Text" subclass="True"/>
     <datatype extension="srspair" type="galaxy.datatypes.data:Text" subclass="True"/>
-    <!-- MSA Datatypes -->
+    <!-- HMM Datatypes -->
     <datatype extension="hmm2" type="galaxy.datatypes.msa:Hmmer2" display_in_upload="true" />
     <datatype extension="hmm3" type="galaxy.datatypes.msa:Hmmer3" display_in_upload="true" />
-    <datatype extension="stockholm" type="galaxy.datatypes.msa:Stockholm_1_0" display_in_upload="True" />
+    <!-- MSA Datatypes -->
+    <datatype extension="stockholm" type="galaxy.datatypes.msa:Stockholm_1_0" display_in_upload="True">
+      <converter file="stockholm_to_clustal.xml" target_datatype="clustal" />
+      <converter file="stockholm_to_fasta.xml" target_datatype="fasta" />
+      <converter file="stockholm_to_nexus.xml" target_datatype="nexus" />
+      <converter file="stockholm_to_phylip.xml" target_datatype="phylip" />
+    </datatype>
     <datatype extension="xmfa" type="galaxy.datatypes.msa:MauveXmfa" display_in_upload="True" />
 
     <datatype extension="RData" type="galaxy.datatypes.binary:RData" display_in_upload="true" description="Stored data from an R session"/>
@@ -471,6 +609,21 @@
     <sniffer type="galaxy.datatypes.text:Json"/>
     <sniffer type="galaxy.datatypes.sequence:RNADotPlotMatrix"/>
     <sniffer type="galaxy.datatypes.sequence:DotBracket"/>
+    <sniffer type="galaxy.datatypes.sequence:Genbank" />
+    <sniffer type="galaxy.datatypes.sequence:Acedb" />
+    <sniffer type="galaxy.datatypes.sequence:Embl" />
+    <sniffer type="galaxy.datatypes.sequence:Ig" />
+    <sniffer type="galaxy.datatypes.sequence:Imgt" />
+    <sniffer type="galaxy.datatypes.sequence:Phd" />
+    <sniffer type="galaxy.datatypes.sequence:SeqXml" />
+    <sniffer type="galaxy.datatypes.sequence:UniprotXml" />
+    <sniffer type="galaxy.datatypes.sequence:Pir" />
+    <sniffer type="galaxy.datatypes.sequence:Swiss" />
+    <sniffer type="galaxy.datatypes.sequence:Clustal" />
+    <sniffer type="galaxy.datatypes.sequence:Emboss" />
+    <sniffer type="galaxy.datatypes.sequence:FastaM10" />
+    <sniffer type="galaxy.datatypes.sequence:Ig" />
+    <sniffer type="galaxy.datatypes.sequence:Phylip" />
     <sniffer type="galaxy.datatypes.tabular:ConnectivityTable"/>
     <sniffer type="galaxy.datatypes.tabular:CSV"/>
     <sniffer type="galaxy.datatypes.msa:Hmmer2" />

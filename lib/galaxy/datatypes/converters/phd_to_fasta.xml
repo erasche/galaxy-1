@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_phd_to_fasta_0" name="Convert phd to fasta" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 phd $output1 fasta
+    </command>
+    <inputs>
+        <param format="phd" name="input1" type="data" label="Choose phd file" />
+    </inputs>
+    <outputs>
+        <data format="fasta" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

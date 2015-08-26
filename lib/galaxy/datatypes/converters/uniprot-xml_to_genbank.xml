@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_uniprot-xml_to_genbank_0" name="Convert uniprot-xml to genbank" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 uniprot-xml $output1 genbank
+    </command>
+    <inputs>
+        <param format="uniprot-xml" name="input1" type="data" label="Choose uniprot-xml file" />
+    </inputs>
+    <outputs>
+        <data format="genbank" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

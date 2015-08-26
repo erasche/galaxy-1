@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_swiss_to_fasta_0" name="Convert swiss to fasta" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 swiss $output1 fasta
+    </command>
+    <inputs>
+        <param format="swiss" name="input1" type="data" label="Choose swiss file" />
+    </inputs>
+    <outputs>
+        <data format="fasta" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_maf_to_clustal_0" name="Convert maf to clustal" version="1.0.0">
+    <command interpreter="python">
+        generic_alignio.py $input1 maf $output1 clustal
+    </command>
+    <inputs>
+        <param format="maf" name="input1" type="data" label="Choose maf file" />
+    </inputs>
+    <outputs>
+        <data format="clustal" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

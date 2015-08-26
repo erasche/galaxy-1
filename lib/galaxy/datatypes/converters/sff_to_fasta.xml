@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_sff_to_fasta_0" name="Convert sff to fasta" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 sff $output1 fasta
+    </command>
+    <inputs>
+        <param format="sff" name="input1" type="data" label="Choose sff file" />
+    </inputs>
+    <outputs>
+        <data format="fasta" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

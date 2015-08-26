@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_uniprot-xml_to_embl_0" name="Convert uniprot-xml to embl" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 uniprot-xml $output1 embl
+    </command>
+    <inputs>
+        <param format="uniprot-xml" name="input1" type="data" label="Choose uniprot-xml file" />
+    </inputs>
+    <outputs>
+        <data format="embl" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

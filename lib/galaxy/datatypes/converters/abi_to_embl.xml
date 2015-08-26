@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_abi_to_embl_0" name="Convert abi to embl" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 abi $output1 embl
+    </command>
+    <inputs>
+        <param format="abi" name="input1" type="data" label="Choose abi file" />
+    </inputs>
+    <outputs>
+        <data format="embl" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_swiss_to_genbank_0" name="Convert swiss to genbank" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 swiss $output1 genbank
+    </command>
+    <inputs>
+        <param format="swiss" name="input1" type="data" label="Choose swiss file" />
+    </inputs>
+    <outputs>
+        <data format="genbank" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

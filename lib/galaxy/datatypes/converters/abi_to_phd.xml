@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_abi_to_phd_0" name="Convert abi to phd" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 abi $output1 phd
+    </command>
+    <inputs>
+        <param format="abi" name="input1" type="data" label="Choose abi file" />
+    </inputs>
+    <outputs>
+        <data format="phd" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

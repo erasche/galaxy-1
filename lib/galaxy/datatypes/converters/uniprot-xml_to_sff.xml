@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_uniprot-xml_to_sff_0" name="Convert uniprot-xml to sff" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 uniprot-xml $output1 sff
+    </command>
+    <inputs>
+        <param format="uniprot-xml" name="input1" type="data" label="Choose uniprot-xml file" />
+    </inputs>
+    <outputs>
+        <data format="sff" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_ace_to_sff_0" name="Convert ace to sff" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 ace $output1 sff
+    </command>
+    <inputs>
+        <param format="ace" name="input1" type="data" label="Choose ace file" />
+    </inputs>
+    <outputs>
+        <data format="sff" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

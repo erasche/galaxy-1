@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_embl_to_phd_0" name="Convert embl to phd" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 embl $output1 phd
+    </command>
+    <inputs>
+        <param format="embl" name="input1" type="data" label="Choose embl file" />
+    </inputs>
+    <outputs>
+        <data format="phd" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

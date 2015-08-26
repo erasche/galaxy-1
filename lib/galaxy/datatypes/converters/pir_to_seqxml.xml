@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_pir_to_seqxml_0" name="Convert pir to seqxml" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 pir $output1 seqxml
+    </command>
+    <inputs>
+        <param format="pir" name="input1" type="data" label="Choose pir file" />
+    </inputs>
+    <outputs>
+        <data format="seqxml" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

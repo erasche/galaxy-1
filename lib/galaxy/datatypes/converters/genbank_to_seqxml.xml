@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_genbank_to_seqxml_0" name="Convert genbank to seqxml" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 genbank $output1 seqxml
+    </command>
+    <inputs>
+        <param format="genbank" name="input1" type="data" label="Choose genbank file" />
+    </inputs>
+    <outputs>
+        <data format="seqxml" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_clustal_to_phylip_0" name="Convert clustal to phylip" version="1.0.0">
+    <command interpreter="python">
+        generic_alignio.py $input1 clustal $output1 phylip
+    </command>
+    <inputs>
+        <param format="clustal" name="input1" type="data" label="Choose clustal file" />
+    </inputs>
+    <outputs>
+        <data format="phylip" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

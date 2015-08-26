@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_embl_to_seqxml_0" name="Convert embl to seqxml" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 embl $output1 seqxml
+    </command>
+    <inputs>
+        <param format="embl" name="input1" type="data" label="Choose embl file" />
+    </inputs>
+    <outputs>
+        <data format="seqxml" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

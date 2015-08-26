@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_phylip_to_fasta-m10_0" name="Convert phylip to fasta-m10" version="1.0.0">
+    <command interpreter="python">
+        generic_alignio.py $input1 phylip $output1 fasta-m10
+    </command>
+    <inputs>
+        <param format="phylip" name="input1" type="data" label="Choose phylip file" />
+    </inputs>
+    <outputs>
+        <data format="fasta-m10" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

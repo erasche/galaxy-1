@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_fasta_to_emboss_0" name="Convert fasta to emboss" version="1.0.0">
+    <command interpreter="python">
+        generic_alignio.py $input1 fasta $output1 emboss
+    </command>
+    <inputs>
+        <param format="fasta" name="input1" type="data" label="Choose fasta file" />
+    </inputs>
+    <outputs>
+        <data format="emboss" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_genbank_to_embl_0" name="Convert genbank to embl" version="1.0.0">
+    <command interpreter="python">
+        generic_seqio.py $input1 genbank $output1 embl
+    </command>
+    <inputs>
+        <param format="genbank" name="input1" type="data" label="Choose genbank file" />
+    </inputs>
+    <outputs>
+        <data format="embl" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>

@@ -1,0 +1,14 @@
+
+<tool id="CONVERTER_nexus_to_maf_0" name="Convert nexus to maf" version="1.0.0">
+    <command interpreter="python">
+        generic_alignio.py $input1 nexus $output1 maf
+    </command>
+    <inputs>
+        <param format="nexus" name="input1" type="data" label="Choose nexus file" />
+    </inputs>
+    <outputs>
+        <data format="maf" name="output1" />
+    </outputs>
+    <help>
+    </help>
+</tool>
