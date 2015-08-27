@@ -25,12 +25,9 @@ try:
 except:
     pass
 
-try:
-    eggs.require( "biopython" )
-    from Bio import SeqIO
-    from Bio import AlignIO
-except:
-    pass
+eggs.require( "biopython" )
+from Bio import SeqIO
+from Bio import AlignIO
 
 log = logging.getLogger(__name__)
 
