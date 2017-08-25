@@ -2,34 +2,13 @@ import logging
 import sys
 import tempfile
 import xml.etree.ElementTree
-from xml.etree import ElementTree as XmlET
+from xml.etree import cElementTree as XmlET
 
 from galaxy.util import listify
 
 log = logging.getLogger(__name__)
 using_python_27 = sys.version_info[:2] >= (2, 7)
 
-
-class Py26CommentedTreeBuilder(XmlET.XMLTreeBuilder):
-    # Python 2.6 uses ElementTree 1.2.x.
-
-    def __init__(self, html=0, target=None):
-        XmlET.XMLTreeBuilder.__init__(self, html, target)
-        self._parser.CommentHandler = self.handle_comment
-
-    def handle_comment(self, data):
-        self._target.start(XmlET.Comment, {})
-        self._target.data(data)
-        self._target.end(XmlET.Comment)
-
-
-class Py27CommentedTreeBuilder(XmlET.TreeBuilder):
-    # Python 2.7 uses ElementTree 1.3.x.
-
-    def comment(self, data):
-        self.start(XmlET.Comment, {})
-        self.data(data)
-        self.end(XmlET.Comment)
 
 
 def create_and_write_tmp_file(elems, use_indent=False):
@@ -121,7 +100,7 @@ def parse_xml(file_name):
     fobj = open(file_name, 'r')
     if using_python_27:
         try:
-            tree = XmlET.parse(fobj, parser=XmlET.XMLParser(target=Py27CommentedTreeBuilder()))
+            tree = XmlET.parse(fobj)
         except Exception as e:
             fobj.close()
             error_message = "Exception attempting to parse %s: %s" % (str(file_name), str(e))
@@ -129,7 +108,7 @@ def parse_xml(file_name):
             return None, error_message
     else:
         try:
-            tree = XmlET.parse(fobj, parser=Py26CommentedTreeBuilder())
+            tree = XmlET.parse(fobj)
         except Exception as e:
             fobj.close()
             error_message = "Exception attempting to parse %s: %s" % (str(file_name), str(e))
