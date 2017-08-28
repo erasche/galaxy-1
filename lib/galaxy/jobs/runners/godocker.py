@@ -252,13 +252,13 @@ class GodockerJobRunner(AsynchronousJobRunner):
         job_wrapper.command_line = job.command_line
         ajs.job_wrapper = job_wrapper
         if job.state == model.Job.states.RUNNING:
-            log.debug("(%s/%s) is still in running state, adding to the god queue" % (job.id, job.get_job_runner_external_id()))
+            log.debug("(%s/%s) is still in running state, adding to the god queue", job.id, job.get_job_runner_external_id())
             ajs.old_state = 'R'
             ajs.running = True
             self.monitor_queue.put(ajs)
 
         elif job.state == model.Job.states.QUEUED:
-            log.debug("(%s/%s) is still in god queued state, adding to the god queue" % (job.id, job.get_job_runner_external_id()))
+            log.debug("(%s/%s) is still in god queued state, adding to the god queue", job.id, job.get_job_runner_external_id())
             ajs.old_state = 'Q'
             ajs.running = False
             self.monitor_queue.put(ajs)
@@ -301,7 +301,7 @@ class GodockerJobRunner(AsynchronousJobRunner):
                 log.debug("CREATE ERROR FILE: " + str(job_state.error_file))
                 log.debug("CREATE EXIT CODE FILE: " + str(job_state.exit_code_file))
             except IOError as e:
-                log.error('Could not access task log file %s' % str(e))
+                log.error('Could not access task log file %s', str(e))
                 log.debug("IO Error occurred when accessing the files.")
                 return False
         return True
@@ -346,7 +346,7 @@ class GodockerJobRunner(AsynchronousJobRunner):
                 docker_image = self._find_container(job_wrapper).container_id
                 log.debug("GoDocker runner using container %s.", docker_image)
             except:
-                log.error("Unable to find docker_image for job %s, failing." % job_wrapper.job_id)
+                log.error("Unable to find docker_image for job %s, failing.", job_wrapper.job_id)
                 return False
 
             volumes = []

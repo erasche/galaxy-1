@@ -758,7 +758,7 @@ class Configuration(object):
         # Check for deprecated options.
         for key in self.config_dict.keys():
             if key in self.deprecated_options:
-                log.warning("Config option '%s' is deprecated and will be removed in a future release.  Please consult the latest version of the sample configuration file." % key)
+                log.warning("Config option '%s' is deprecated and will be removed in a future release.  Please consult the latest version of the sample configuration file.", key)
 
     def is_admin_user(self, user):
         """
@@ -881,7 +881,7 @@ def configure_logging(config):
         format = config.get("log_format", "%(name)s %(levelname)s %(asctime)s %(message)s")
         level = logging._levelNames[config.get("log_level", "DEBUG")]
         destination = config.get("log_destination", "stdout")
-        log.info("Logging at '%s' level to '%s'" % (level, destination))
+        log.info("Logging at '%s' level to '%s'", level, destination)
         # Set level
         root.setLevel(level)
 
@@ -1063,7 +1063,7 @@ class ConfiguresGalaxyMixin:
         else:
             from galaxy.model.tool_shed_install import mapping as install_mapping
             install_db_url = self.config.install_database_connection
-            log.info("Install database using its own connection %s" % install_db_url)
+            log.info("Install database using its own connection %s", install_db_url)
             install_db_engine_options = self.config.install_database_engine_options
             self.install_model = install_mapping.init(install_db_url,
                                                       install_db_engine_options)

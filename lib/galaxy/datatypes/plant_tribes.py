@@ -88,7 +88,7 @@ class PlantTribes(Html):
             if os.path.exists(efp):
                 dataset.metadata.num_files = len(os.listdir(efp))
         except Exception as e:
-            log.warning("set_meta fname: %s %s" % (dataset.file_name if dataset and dataset.file_name else 'Unkwown', str(e)))
+            log.warning("set_meta fname: %s %s", (dataset.file_name if dataset and dataset.file_name else 'Unkwown', str(e)))
 
 
 class PlantTribesKsComponents(Tabular):

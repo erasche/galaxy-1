@@ -311,7 +311,7 @@ class ToolsController(BaseAPIController, UsesVisualizationMixin):
             if not trans.user:
                 log.warning("Anonymous user attempts to execute tool, but account activation is turned on.")
             elif not trans.user.active:
-                log.warning("User \"%s\" attempts to execute tool, but account activation is turned on and user account is not active." % trans.user.email)
+                log.warning("User \"%s\" attempts to execute tool, but account activation is turned on and user account is not active.", trans.user.email)
 
         # Set running history from payload parameters.
         # History not set correctly as part of this API call for

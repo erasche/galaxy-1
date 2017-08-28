@@ -106,7 +106,7 @@ class DataTransfer(object):
                     result_dict = tj.params
                     result_dict['local_path'] = tj.path
                 except Exception as e:
-                    log.error("Updated transfer result unavailable, using old result.  Error was: %s" % str(e))
+                    log.error("Updated transfer result unavailable, using old result.  Error was: %s", str(e))
                     result_dict = job.params['result']
                 library_dataset_name = result_dict['name']
                 # Determine the data format (see the relevant TODO item in the manual_data_transfer plugin)..
@@ -152,12 +152,12 @@ class DataTransfer(object):
                 self.sa_session.add(ldda)
                 self.sa_session.flush()
             except Exception as e:
-                log.exception('Failure preparing library dataset for finished transfer job (id: %s) via deferred job (id: %s):' %
-                              (str(job.transfer_job.id), str(job.id)))
+                log.exception('Failure preparing library dataset for finished transfer job (id: %s) via deferred job (id: %s):',
+                              str(job.transfer_job.id), str(job.id))
                 ldda.state = ldda.states.ERROR
             if sample.workflow:
-                log.debug("\n\nLogging sample mappings as: %s" % sample.workflow['mappings'])
-                log.debug("job.params: %s" % job.params)
+                log.debug("\n\nLogging sample mappings as: %s", sample.workflow['mappings'])
+                log.debug("job.params: %s", job.params)
                 # We have a workflow.  Update all mappings to ldda's, and when the final one is done
                 # execute_workflow with either the provided history, or a new one.
                 sub_done = True
@@ -189,7 +189,7 @@ class DataTransfer(object):
                 # We don't have a workflow, but a history was provided.
                 # No processing, go ahead and chunk everything in the history.
                 if ldda.dataset.state in ['new', 'upload', 'queued', 'running', 'empty', 'discarded']:
-                    log.error("Cannot import dataset '%s' to user history since its state is '%s'.  " % (ldda.name, ldda.dataset.state))
+                    log.error("Cannot import dataset '%s' to user history since its state is '%s'.  ", (ldda.name, ldda.dataset.state))
                 elif ldda.dataset.state in ['ok', 'error']:
                     ldda.to_history_dataset_association(target_history=sample.history, add_to_history=True)
             # Finished
@@ -213,7 +213,7 @@ class DataTransfer(object):
     def _missing_params(self, params, required_params):
         missing_params = [x for x in required_params if x not in params]
         if missing_params:
-            log.error('Job parameters missing required keys: %s' % ', '.join(missing_params))
+            log.error('Job parameters missing required keys: %s', ', '.join(missing_params))
             return True
         return False
 
@@ -275,7 +275,7 @@ class DataTransfer(object):
                 # If HDA is already here, it's an external input, we're not copying anything.
                 ldda = self.sa_session.query(self.app.model.LibraryDatasetDatasetAssociation).get(value['ldda'])
                 if ldda.dataset.state in ['new', 'upload', 'queued', 'running', 'empty', 'discarded']:
-                    log.error("Cannot import dataset '%s' to user history since its state is '%s'.  " % (ldda.name, ldda.dataset.state))
+                    log.error("Cannot import dataset '%s' to user history since its state is '%s'.  ", (ldda.name, ldda.dataset.state))
                 elif ldda.dataset.state in ['ok', 'error']:
                     hda = ldda.to_history_dataset_association(target_history=sample.history, add_to_history=True)
                     sample.workflow['mappings'][key]['hda'] = hda.id

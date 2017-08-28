@@ -734,7 +734,7 @@ class RepositoryMetadataManager(metadata_generator.MetadataGenerator):
 
     def reset_all_metadata_on_repository_in_tool_shed(self):
         """Reset all metadata on a single repository in a tool shed."""
-        log.debug("Resetting all metadata on repository: %s" % self.repository.name)
+        log.debug("Resetting all metadata on repository: %s", self.repository.name)
         repo = hg_util.get_repo_for_repository(self.app,
                                                repository=None,
                                                repo_path=self.repository.repo_path(self.app),
@@ -881,8 +881,8 @@ class RepositoryMetadataManager(metadata_generator.MetadataGenerator):
                         log.debug(message)
                         unsuccessful_count += 1
                     else:
-                        log.debug("Successfully reset metadata on repository %s owned by %s" %
-                            (str(repository.name), str(repository.user.username)))
+                        log.debug("Successfully reset metadata on repository %s owned by %s",
+                            str(repository.name), str(repository.user.username))
                         successful_count += 1
                 except:
                     log.exception("Error attempting to reset metadata on repository %s", str(repository.name))

@@ -91,11 +91,11 @@ class InstalledRepositoryMetadataManager(metadata_generator.MetadataGenerator):
                 self.app.install_model.context.add(self.repository)
                 self.app.install_model.context.flush()
                 self.app.tool_shed_repository_cache.rebuild()
-                log.debug('Metadata has been reset on repository %s.' % self.repository.name)
+                log.debug('Metadata has been reset on repository %s.', self.repository.name)
             else:
-                log.debug('Metadata did not need to be reset on repository %s.' % self.repository.name)
+                log.debug('Metadata did not need to be reset on repository %s.', self.repository.name)
         else:
-            log.debug('Error locating installation directory for repository %s.' % self.repository.name)
+            log.debug('Error locating installation directory for repository %s.', self.repository.name)
 
     def reset_metadata_on_selected_repositories(self, user, **kwd):
         """
@@ -122,8 +122,8 @@ class InstalledRepositoryMetadataManager(metadata_generator.MetadataGenerator):
                         log.debug(message)
                         unsuccessful_count += 1
                     else:
-                        log.debug("Successfully reset metadata on repository %s owned by %s" %
-                            (str(repository.name), str(repository.owner)))
+                        log.debug("Successfully reset metadata on repository %s owned by %s",
+                            str(repository.name), str(repository.owner))
                         successful_count += 1
                 except:
                     log.exception("Error attempting to reset metadata on repository %s", str(repository.name))

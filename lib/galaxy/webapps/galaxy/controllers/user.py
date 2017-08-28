@@ -500,7 +500,7 @@ class User(BaseUIController, UsesFormDefinitionsMixin, CreatesUsersMixin, Create
             trans.app.model.User.table.c.email == login,
             trans.app.model.User.table.c.username == login
         )).first()
-        log.debug("trans.app.config.auth_config_file: %s" % trans.app.config.auth_config_file)
+        log.debug("trans.app.config.auth_config_file: %s", trans.app.config.auth_config_file)
         if not user:
             autoreg = trans.app.auth_manager.check_auto_registration(trans, login, password)
             if autoreg[0]:

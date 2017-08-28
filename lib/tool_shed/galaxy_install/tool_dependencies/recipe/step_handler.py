@@ -80,7 +80,7 @@ class CompressedFile(object):
                     if os.path.exists(absolute_filepath):
                         os.chmod(absolute_filepath, unix_permissions)
                     else:
-                        log.warning("Unable to change permission on extracted file '%s' as it does not exist" % absolute_filepath)
+                        log.warning("Unable to change permission on extracted file '%s' as it does not exist", absolute_filepath)
         return os.path.abspath(os.path.join(extraction_path, common_prefix))
 
     def getmembers_tar(self):
@@ -671,7 +671,7 @@ class DownloadByUrl(Download, RecipeStep):
                 logfile = open(log_file, 'wb')
             logfile.write('Successfully downloaded from url: %s\n' % action_dict['url'])
             logfile.close()
-        log.debug('Successfully downloaded from url: %s' % action_dict['url'])
+        log.debug('Successfully downloaded from url: %s', action_dict['url'])
         if initial_download:
             return tool_dependency, filtered_actions, dir
         return tool_dependency, None, None
@@ -1180,8 +1180,8 @@ class SetupPerlEnvironment(Download, RecipeStep):
             return tool_dependency, None, None
         else:
             install_environment.add_env_shell_file_paths(env_shell_file_paths)
-        log.debug('Handling setup_perl_environment for tool dependency %s with install_environment.env_shell_file_paths:\n%s' %
-                  (str(tool_dependency.name), str(install_environment.env_shell_file_paths)))
+        log.debug('Handling setup_perl_environment for tool dependency %s with install_environment.env_shell_file_paths:\n%s',
+                  str(tool_dependency.name), str(install_environment.env_shell_file_paths))
         dir = os.path.curdir
         current_dir = os.path.abspath(os.path.join(work_dir, dir))
         with lcd(current_dir):
@@ -1208,8 +1208,8 @@ class SetupPerlEnvironment(Download, RecipeStep):
                         elif os.path.exists(os.path.join(tmp_work_dir, 'Build.PL')):
                             cmd += '''perl Build.PL --install_base $INSTALL_DIR && perl Build && perl Build install'''
                         else:
-                            log.debug('No Makefile.PL or Build.PL file found in %s. Skipping installation of %s.' %
-                                (url, perl_package_name))
+                            log.debug('No Makefile.PL or Build.PL file found in %s. Skipping installation of %s.',
+                                url, perl_package_name)
                             if initial_download:
                                 return tool_dependency, filtered_actions, dir
                             return tool_dependency, None, None
@@ -1325,8 +1325,8 @@ class SetupREnvironment(Download, RecipeStep):
             return tool_dependency, [], None
         else:
             install_environment.add_env_shell_file_paths(env_shell_file_paths)
-        log.debug('Handling setup_r_environment for tool dependency %s with install_environment.env_shell_file_paths:\n%s' %
-                  (str(tool_dependency.name), str(install_environment.env_shell_file_paths)))
+        log.debug('Handling setup_r_environment for tool dependency %s with install_environment.env_shell_file_paths:\n%s',
+                  str(tool_dependency.name), str(install_environment.env_shell_file_paths))
         tarball_names = []
         for r_package_dict in action_dict['r_packages']:
             url = r_package_dict['package']
@@ -1429,8 +1429,8 @@ class SetupRubyEnvironment(Download, RecipeStep):
             return tool_dependency, None, None
         else:
             install_environment.add_env_shell_file_paths(env_shell_file_paths)
-        log.debug('Handling setup_ruby_environment for tool dependency %s with install_environment.env_shell_file_paths:\n%s' %
-                  (str(tool_dependency.name), str(install_environment.env_shell_file_paths)))
+        log.debug('Handling setup_ruby_environment for tool dependency %s with install_environment.env_shell_file_paths:\n%s',
+                  str(tool_dependency.name), str(install_environment.env_shell_file_paths))
         dir = os.path.curdir
         current_dir = os.path.abspath(os.path.join(work_dir, dir))
         with lcd(current_dir):
@@ -1572,8 +1572,8 @@ class SetupPythonEnvironment(Download, RecipeStep):
             return tool_dependency, None, None
         else:
             install_environment.add_env_shell_file_paths(env_shell_file_paths)
-        log.debug('Handling setup_python_environment for tool dependency %s with install_environment.env_shell_file_paths:\n%s' %
-                  (str(tool_dependency.name), str(install_environment.env_shell_file_paths)))
+        log.debug('Handling setup_python_environment for tool dependency %s with install_environment.env_shell_file_paths:\n%s',
+                  str(tool_dependency.name), str(install_environment.env_shell_file_paths))
         dir = os.path.curdir
         current_dir = os.path.abspath(os.path.join(work_dir, dir))
         with lcd(current_dir):
@@ -1907,6 +1907,6 @@ class TemplateCommand(RecipeStep):
                 action_dict['language'] = language
                 action_dict['command'] = action_elem_text
         else:
-            log.debug("Unsupported template language '%s'. Not proceeding." % str(language))
+            log.debug("Unsupported template language '%s'. Not proceeding.",str(language))
             raise Exception("Unsupported template language '%s' in tool dependency definition." % str(language))
         return action_dict

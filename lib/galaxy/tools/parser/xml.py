@@ -717,8 +717,7 @@ class StdioParser(object):
                         exit_code.range_end = int(code_ranges[1])
                 # If we got more than one colon, then ignore the exit code.
                 elif (len(code_ranges) > 2):
-                    log.warning("Invalid tool exit_code range %s - ignored"
-                                % code_range)
+                    log.warning("Invalid tool exit_code range %s - ignored", code_range)
                     continue
                 # Else we have a singular value. If it's not an integer, then
                 # we'll just write a log message and skip this exit_code.
@@ -727,7 +726,7 @@ class StdioParser(object):
                         exit_code.range_start = int(code_range)
                     except:
                         log.error(code_range)
-                        log.warning("Invalid range start for tool's exit_code %s: exit_code ignored" % code_range)
+                        log.warning("Invalid range start for tool's exit_code %s: exit_code ignored", code_range)
                         continue
                     exit_code.range_end = exit_code.range_start
                 # TODO: Check if we got ">", ">=", "<", or "<=":
@@ -738,7 +737,7 @@ class StdioParser(object):
                 if (isinf(exit_code.range_start) and
                         isinf(exit_code.range_end)):
                     log.warning("Tool exit_code range %s will match on " +
-                                "all exit codes" % code_range)
+                                "all exit codes", code_range)
                 self.stdio_exit_codes.append(exit_code)
         except Exception:
             log.error("Exception in parse_stdio_exit_codes! " +
@@ -746,7 +745,7 @@ class StdioParser(object):
             trace = sys.exc_info()[2]
             if trace is not None:
                 trace_msg = repr(traceback.format_tb(trace))
-                log.error("Traceback: %s" % trace_msg)
+                log.error("Traceback: %s", trace_msg)
 
     def parse_stdio_regexes(self, stdio_elem):
         """
