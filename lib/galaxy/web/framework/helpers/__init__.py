@@ -50,14 +50,14 @@ def truncate(content, length=100, suffix='...'):
 # Quick helpers for static content
 
 
-def css(*args):
+def css(*args, **kwargs):
     """
     Take a list of stylesheet names (no extension) and return appropriate string
     of link tags.
 
     Cache-bust with time that server started running on
     """
-    return "\n".join([stylesheet_link(url_for("/static/style/%s.css?v=%s" % (name, server_starttime))) for name in args])
+    return "\n".join([stylesheet_link(url_for("/static/style/%s.css?v=%s" % (name, server_starttime)), **kwargs) for name in args])
 
 
 def js_helper(prefix, *args):
