@@ -22,7 +22,7 @@ class TransLogger(object):
 
     format = ('%(REMOTE_ADDR)s - %(REMOTE_USER)s [%(time)s] '
               '"%(REQUEST_METHOD)s %(REQUEST_URI)s %(HTTP_VERSION)s" '
-              '%(status)s %(bytes)s "%(HTTP_REFERER)s" "%(HTTP_USER_AGENT)s"')
+              '%(status)s %(bytes)s "%(HTTP_REFERER)s" "%(HTTP_USER_AGENT)s" "%(GALAXY_SESSION)s"')
 
     def __init__(self, application,
                  logger=None,
@@ -81,6 +81,13 @@ class TransLogger(object):
             offset = "+%0.4d" % (offset)
         elif offset < 0:
             offset = "%0.4d" % (offset)
+
+        session = '-'
+        if 'paste.cookies' in environ:
+            simplecookie = environ['paste.cookies'][0]
+            if 'galaxysession' in simplecookie:
+                session = simplecookie['galaxysession'].value
+
         d = {
             'REMOTE_ADDR': environ.get('REMOTE_ADDR') or '-',
             'REMOTE_USER': environ.get('REMOTE_USER') or '-',
@@ -92,6 +99,7 @@ class TransLogger(object):
             'bytes': bytes,
             'HTTP_REFERER': environ.get('HTTP_REFERER', '-'),
             'HTTP_USER_AGENT': environ.get('HTTP_USER_AGENT', '-'),
+            'GALAXY_SESSION': session,
         }
         message = self.format % d
         self.logger.log(self.logging_level, message)
