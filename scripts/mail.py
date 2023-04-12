@@ -5,12 +5,17 @@ from datetime import datetime, timedelta
 import argparse
 
 import os
+from re import template
 
 import sys
 from typing_extensions import TypeVarTuple
+from datetime import datetime, timedelta
 
-
-
+# Import smtplib for the actual sending function
+import smtplib
+# Import the email modules we'll need
+from email.message import EmailMessage
+from jinja2 import Template
 sys.path.insert(
 
     1, os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, "lib"))
@@ -255,19 +260,22 @@ def send_email_to_users(sa_session,delete_ret,warn_ret,dry_run,allow_emailing):
         print("no histories detected to warn users about")
 
 
-def send_warning_or_delete_email(info_history_warn,sa_session,modus,dry_run):
+def send_warning_or_delete_email(info_history,sa_session,modus,dry_run):
    
    #TODO
    # implement Dry function in here that it skips mailing
    # implement a will be deleted or warning string for in the email
    #get user information
-   user_ret = get_user_info(sa_session,info_history_warn)
+   user_ret = get_user_info(sa_session,info_history)
    if dry_run:
        print(f"dry run activated not sending {modus} email to {len(list(user_ret))} users")
    else:
-       print (f"going to {modus} {len(info_history_warn.keys())} users about hisotrie")
+       print (f"going to {modus} {len(info_history.keys())} users about hisotrie")
        for user in user_ret:
-           print(user.id, user.email)
+           #generating list of histories
+           user_histories = list(info_history[user.id].values())
+           #print(user.id, user.email,user_histories,modus)
+           send_email(user.id,user.email,user_histories,modus)
 
 def get_user_info(sa_session,info_history):
     
@@ -283,18 +291,119 @@ def get_user_info(sa_session,info_history):
 
 def collect_users_to_mail(history_query):
         
-        data = {}
-
+        data = {}        
         for history in history_query:
             #makes sure it skips the userless histories
+            print(type(history._update_time))
             if history.user_id == None:
                 continue
             elif int(history.user_id) not in data.keys():
-                data[int(history.user_id)] = { history.id : history.name}
+                data[int(history.user_id)] = { history.id :{"name": str(history.name),
+                                                            "id": str(history.id),
+                                                            "h_update_time":str((history._update_time).strftime("%Y-%m-%d")),
+                                                            #TODO modify this to ansible variables
+                                                            "h_del_time":  str((history._update_time + timedelta(days=10)).strftime("%Y-%m-%d"))}}
             else:
-                data[int(history.user_id)][ history.id ] = history.name
+                data[int(history.user_id)][ history.id ] = {"name": str(history.name),
+                                                            "id": str(history.id),
+                                                            "h_update_time":str((history._update_time).strftime("%Y-%m-%d")),
+                                                            #TODO modify this to ansible variables
+                                                            "h_del_time":  str((history._update_time + timedelta(days=10)).strftime("%Y-%m-%d"))}
         return data
 
+def read_in_template(modus):
+
+    #TODO, 
+    #make it read in the template instead of hard coded but it has to work somehow in testing enviorment
+
+    if modus == "warn":
+        msg = """<html>
+        <body>
+        <p>Dear {% username %},</p>
+        <p>You are receiving this email as one or more of your histories on {{ Galaxy Brand }} have not been updated for {{ warn_weeks }} weeks or more. They will be beyond the User Data Storage time limits soon ({{ delete_weeks }} weeks). Displayed next to each history in the table below is the date that it will be deleted. If you do not run a job in that history or update it before that date, it will be automatically deleted and then purged from disk.</p>
+
+        <p>You should download any files you wish to keep from each history before the date specified. Instructions for doing so can be found at:</p>
+
+        <p><a href='https://training.galaxyproject.org/training-material/topics/galaxy-data-manipulation/tutorials/download-delete-data/tutorial.html'>Galaxy Training Material - Downloading and Deleting Data</a></p>
+
+        <p>Please note that if you have received a warning email in the past, new histories could have been added to the following table and they will have a different scheduled deletion date.</p>
+
+        <p>Please see the {% if histories|length > 1 %}histories{% else %}history{% endif %} in question below:</p>
+        <p>
+            <table>
+                <tr style="color:white;background-color:gray"><th>History Name</th><th>Date last updated</th><th>Size</th><th>Deletion Date</th></tr>
+                {% for h in histories | sort(attribute='h_update_time') %}
+                    <tr style="background-color:#eee"><td><a target="_blank" href="{{ hist_view_base }}{{ h['id'] }}">{{ h['name'] }}</a></td><td>{{ h['h_update_time'] }}</td><td>{{ h['h_size'] }}</td><td>{{ h['h_del_time'] }}</td></tr>
+                {% endfor %}
+            </table>
+        </p>
+
+
+
+        <p>{{ Galaxy Brand }} is a data analysis platform and stores data in accordance with the <a href="{{ data_policy_url }}">User Data Storage Policy</a></p>
+        <p>If you have any queries regarding this email, please don't hesitate to contact us at: <a href="mailto:{{ email_from }}">{{ email_from }}</a></p>
+        Yours,
+        <br/>
+        <br/>
+        {{ Galaxy Brand }} Administrators.
+        <p></p>
+        </body>
+        </html>"""
+    elif modus == "delete":
+        msg = """<html>
+        <body>
+        <p>Dear {{ user_name }},</p>
+        <p>You are receiving this email as one or more of your histories on {{ Galaxy Brand }} have not been updated for {{ delete_weeks }} weeks or more and have now been marked as deleted. They and their associated data will be purged from our disk in 5 days time (from the date of this email).
+
+        <p>Please see the {% if histories|length > 1 %}histories{% else %}history{% endif %} in question below:</p>
+        <p>
+            <table>
+                <tr style="color:white;background-color:gray"><th>History Name</th><th>Date last updated</th><th>Size</th></tr>
+                {% for h in histories %}
+                    <tr style="background-color:#eee"><td><a target="_blank" href="{{ hist_view_base }}{{ h['id'] }}">{{ h['name'] }}</a></td><td>{{ h['h_update_time'] }}</td><td>{{ h['h_size'] }}</td></tr>
+                {% endfor %}
+            </table>
+        </p>
+        <p>If you have any queries regarding this email, please don't hesitate to reply to: <a href="mailto:help@genome.edu.au">help@genome.edu.au</a></p>
+        Yours,
+        <br/>
+        <br/>
+        Galaxy Australia Administrators.
+        <p></p>
+        </body>
+        </html>"""
+
+    return msg
+
+def mutate_message(message,username,histories):
+    print(message)
+    j2_template = template(message)
+
+    message = j2_template.render({"user_name": username })
+    return message
+def send_email(user_email,user_name,histories,modus):
+
+    #this is a test setting before i put it in an ansible role
+    
+    message = read_in_template(modus)
+    message = mutate_message(message,user_name,histories)
+    print(message)
+    exit()
+    msg = EmailMessage()
+    msg.set_content("Hello, world")
+
+    # me == the sender's email address
+    # you == the recipient's email address
+    msg["Subject"] = "lol"
+    msg["From"] = "bioinformatics-team@bioinformatics-atgm.nl"
+    msg["To"] = user_email
+
+    # Send the message via our own SMTP server.
+    server = smtplib.SMTP("smtp.strato.com", 587)
+    server.starttls()
+    server.login("galaxy@bioinformatics-atgm.nl", "e632...")
+    server.send_message(msg)
+    server.quit()
 
 if __name__ == "__main__":
 
