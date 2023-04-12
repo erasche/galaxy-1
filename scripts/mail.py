@@ -7,6 +7,7 @@ import argparse
 import os
 
 import sys
+from typing_extensions import TypeVarTuple
 
 
 
@@ -228,13 +229,11 @@ def process_size(histories, label="delete eligible"):
 
     )
 
-    print(ret)
-
     return ret
 
 
 
-def send_email_to_users(sa_session,delete_ret,warn_ret,dry_run):
+def send_email_to_users(sa_session,delete_ret,warn_ret,dry_run,allow_emailing):
     #collecting user information by history user_id and then nescaery information to write an email
 
 
@@ -243,16 +242,17 @@ def send_email_to_users(sa_session,delete_ret,warn_ret,dry_run):
     info_history_delete = (collect_users_to_mail(delete_ret))
     info_history_warn = (collect_users_to_mail(warn_ret))
 
-    print (f" going to warn {len(info_history_warn.keys())} users")
     if len(info_history_warn.keys()) > 0:
-       send_warning_email(info_history_warn,sa_session,"warn",dry_run)
+       if allow_emailing:
+        send_warning_or_delete_email(info_history_warn,sa_session,"warn",dry_run)
+    else:
+        print("no histories detected to warn users about")
     
-    print (f" going to send a delete email to  {len(info_history_delete.keys())} users")
-    if len(info_history_delete.keys()) > 0: 
-        user_ret = get_user_info(sa_session,info_history_delete,dry_run)
-        #lil check for me because i can :)
-        for user in user_ret:
-             print(user.id, user.email, user.username)
+    if len(info_history_delete.keys()) > 0:
+        if allow_emailing:
+            send_warning_or_delete_email(info_history_delete,sa_session,"delete",dry_run)
+    else:
+        print("no histories detected to warn users about")
 
 
 def send_warning_or_delete_email(info_history_warn,sa_session,modus,dry_run):
@@ -262,13 +262,16 @@ def send_warning_or_delete_email(info_history_warn,sa_session,modus,dry_run):
    # implement a will be deleted or warning string for in the email
    #get user information
    user_ret = get_user_info(sa_session,info_history_warn)
-   for user in user_ret:
-       print(user.id, user.email)
+   if dry_run:
+       print(f"dry run activated not sending {modus} email to {len(list(user_ret))} users")
+   else:
+       print (f"going to {modus} {len(info_history_warn.keys())} users about hisotrie")
+       for user in user_ret:
+           print(user.id, user.email)
 
 def get_user_info(sa_session,info_history):
     
     id_present = info_history.keys()
-    print(id_present)
     user_info = (
         sa_session.query(model.User)
         .filter(model.User.id.in_(id_present))
@@ -292,6 +295,7 @@ def collect_users_to_mail(history_query):
                 data[int(history.user_id)][ history.id ] = history.name
         return data
 
+
 if __name__ == "__main__":
 
 
@@ -299,8 +303,10 @@ if __name__ == "__main__":
     #ansible modifiable settings
     #look for defaults or general groupvars, probably something
     warn_days = 0
-    delete_days = 0
+    delete_days = 1
 
+    #exstra ansible setting i want since not all instances are allowed to email
+    allow_emailing = True
 
 
     print("Loading Galaxy model...")
@@ -314,4 +320,4 @@ if __name__ == "__main__":
     warn_ret = get_warn_histories(sa_session, wt, dt)
     delete_ret = get_delete_histories(sa_session, wt, dt)
 
-    send_email_to_users(sa_session,delete_ret,warn_ret,args.dryrun)
+    send_email_to_users(sa_session,delete_ret,warn_ret,args.dryrun,allow_emailing)
