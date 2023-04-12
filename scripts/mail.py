@@ -281,8 +281,12 @@ def get_user_info(sa_session,info_history):
 def collect_users_to_mail(history_query):
         
         data = {}
+
         for history in history_query:
-            if int(history.user_id) not in data.keys():
+            #makes sure it skips the userless histories
+            if history.user_id == None:
+                continue
+            elif int(history.user_id) not in data.keys():
                 data[int(history.user_id)] = { history.id : history.name}
             else:
                 data[int(history.user_id)][ history.id ] = history.name
