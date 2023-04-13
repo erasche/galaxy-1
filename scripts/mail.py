@@ -317,10 +317,11 @@ def read_in_template(modus):
     #make it read in the template instead of hard coded but it has to work somehow in testing enviorment
 
     if modus == "warn":
-        msg = """<html>
+        msg = """
+        <html>
         <body>
-        <p>Dear {% username %},</p>
-        <p>You are receiving this email as one or more of your histories on {{ Galaxy Brand }} have not been updated for {{ warn_weeks }} weeks or more. They will be beyond the User Data Storage time limits soon ({{ delete_weeks }} weeks). Displayed next to each history in the table below is the date that it will be deleted. If you do not run a job in that history or update it before that date, it will be automatically deleted and then purged from disk.</p>
+        <p>Dear {{ user_name }},</p>
+        <p>You are receiving this email as one or more of your histories on {{ Galaxy_Brand }} have not been updated for {{ warn_weeks }} weeks or more. They will be beyond the User Data Storage time limits soon ({{ delete_weeks }} weeks). Displayed next to each history in the table below is the date that it will be deleted. If you do not run a job in that history or update it before that date, it will be automatically deleted and then purged from disk.</p>
 
         <p>You should download any files you wish to keep from each history before the date specified. Instructions for doing so can be found at:</p>
 
@@ -340,20 +341,21 @@ def read_in_template(modus):
 
 
 
-        <p>{{ Galaxy Brand }} is a data analysis platform and stores data in accordance with the <a href="{{ data_policy_url }}">User Data Storage Policy</a></p>
-        <p>If you have any queries regarding this email, please don't hesitate to contact us at: <a href="mailto:{{ email_from }}">{{ email_from }}</a></p>
+        <p>{{ Galaxy_Brand }} is a data analysis platform and stores data in accordance with the <a href="{{ data_policy_url }}">User Data Storage Policy</a></p>
+        <p>If you have any queries regarding this email, please don't hesitate to contact us at: <a href="mailto:{{ email_sender }}">{{ email_sender }}</a></p>
         Yours,
         <br/>
         <br/>
-        {{ Galaxy Brand }} Administrators.
+        {{ Galaxy_Brand }} Administrators.
         <p></p>
         </body>
         </html>"""
     elif modus == "delete":
-        msg = """<html>
+        msg = """
+        <html>
         <body>
         <p>Dear {{ user_name }},</p>
-        <p>You are receiving this email as one or more of your histories on {{ Galaxy Brand }} have not been updated for {{ delete_weeks }} weeks or more and have now been marked as deleted. They and their associated data will be purged from our disk in 5 days time (from the date of this email).
+        <p>You are receiving this email as one or more of your histories on {{ Galaxy_Brand }} have not been updated for {{ delete_weeks }} weeks or more and have now been marked as deleted. They and their associated data will be purged from our disk in 5 days time (from the date of this email).
 
         <p>Please see the {% if histories|length > 1 %}histories{% else %}history{% endif %} in question below:</p>
         <p>
@@ -364,11 +366,11 @@ def read_in_template(modus):
                 {% endfor %}
             </table>
         </p>
-        <p>If you have any queries regarding this email, please don't hesitate to reply to: <a href="mailto:help@genome.edu.au">help@genome.edu.au</a></p>
+        <p>If you have any queries regarding this email, please don't hesitate to reply to: <a href="mailto:{{ email_sender }}">{{ email_sender }}</a></p>
         Yours,
         <br/>
         <br/>
-        Galaxy Australia Administrators.
+        {{ Galaxy_Brand }} Administrators.
         <p></p>
         </body>
         </html>"""
@@ -377,9 +379,17 @@ def read_in_template(modus):
 
 def mutate_message(message,username,histories):
     print(message)
-    j2_template = template(message)
-
-    message = j2_template.render({"user_name": username })
+    print(histories)
+    j2_template = Template(message)
+    #TODO,. make it ansible variables
+    print("\n#########################################\n")
+    message = (j2_template.render({"user_name": username,
+                             "hist_view_base":"127.0.0.1/histories/view?="
+                              "Galaxy_Brand": "Avans Galaxy",#standard settings in groupvars or brand?>>>????
+                               "delete_weeks": "180",#standard settings in group vars
+                               "warn_weeks": "170", #standart settings in groupvars
+                               "email_sender": "Bioinformatics_atgm.nl", #ansibe change galaxy var or something else idk 
+                               "histories": histories}))
     return message
 def send_email(user_email,user_name,histories,modus):
 
@@ -387,23 +397,23 @@ def send_email(user_email,user_name,histories,modus):
     
     message = read_in_template(modus)
     message = mutate_message(message,user_name,histories)
+    print(user_email,user_name)
     print(message)
-    exit()
-    msg = EmailMessage()
-    msg.set_content("Hello, world")
+    #msg = EmailMessage()
+    #msg.set_content("Hello, world")
 
     # me == the sender's email address
     # you == the recipient's email address
-    msg["Subject"] = "lol"
-    msg["From"] = "bioinformatics-team@bioinformatics-atgm.nl"
-    msg["To"] = user_email
+    #msg["Subject"] = "lol"
+    #msg["From"] = "bioinformatics-team@bioinformatics-atgm.nl"
+    #msg["To"] = user_email
 
     # Send the message via our own SMTP server.
-    server = smtplib.SMTP("smtp.strato.com", 587)
-    server.starttls()
-    server.login("galaxy@bioinformatics-atgm.nl", "e632...")
-    server.send_message(msg)
-    server.quit()
+    #server = smtplib.SMTP("smtp.strato.com", 587)
+    #server.starttls()
+    #server.login("galaxy@bioinformatics-atgm.nl", "e632...")
+    #server.send_message(msg)
+    #server.quit()
 
 if __name__ == "__main__":
 
@@ -412,7 +422,7 @@ if __name__ == "__main__":
     #ansible modifiable settings
     #look for defaults or general groupvars, probably something
     warn_days = 0
-    delete_days = 1
+    delete_days = 1000
 
     #exstra ansible setting i want since not all instances are allowed to email
     allow_emailing = True
